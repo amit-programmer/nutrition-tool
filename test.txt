@@ -1,0 +1,1 @@
+node -e "const db = require('better-sqlite3')('nutrition.sqlite'); console.table(db.prepare('SELECT id, food_name, calories, protein_g, fat_g, iron_mg, zinc_mg, magnesium_mg, calcium_mg, potassium_mg, sodium_mg, VitaminD3_mg, VitaminB12_mg FROM food_nutrition ORDER BY id DESC LIMIT 10').all());"
