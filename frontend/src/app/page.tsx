@@ -12,6 +12,7 @@ import CalorieMacroRings from '../components/CalorieMacroRings';
 import MedicalAlertBanners from '../components/MedicalAlertBanners';
 import BioScoreCard from '../components/BioScoreCard';
 import DailyMealTimeline from '../components/DailyMealTimeline';
+import { getActiveBaseUrl } from '../utils/api';
 
 export default function Dashboard() {
   const isMounted = useMounted();
@@ -50,7 +51,7 @@ export default function Dashboard() {
           sodium_mg: logs.reduce((sum, log) => sum + (log.total_sodium || 0), 0),
         };
 
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const baseUrl = await getActiveBaseUrl();
         const response = await fetch(`${baseUrl}/api/analyze-daily-score`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -98,7 +99,7 @@ export default function Dashboard() {
         medical_conditions: (profile.medicalConditions || []).map((c) => c.toLowerCase().trim()),
       } : {};
 
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const baseUrl = await getActiveBaseUrl();
       const response = await fetch(`${baseUrl}/api/analyze-meal`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -216,7 +217,7 @@ export default function Dashboard() {
         medical_conditions: (profile.medicalConditions || []).map((c) => c.toLowerCase().trim()),
       } : {};
 
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const baseUrl = await getActiveBaseUrl();
       const response = await fetch(`${baseUrl}/api/analyze-image`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

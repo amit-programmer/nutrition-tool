@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { getActiveBaseUrl } from '../utils/api';
 
 export function useAudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -51,7 +52,7 @@ export function useAudioRecorder() {
       const formData = new FormData();
       formData.append('audio', blob, 'recording.webm');
 
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const baseUrl = await getActiveBaseUrl();
       const response = await fetch(`${baseUrl}/api/transcribe`, {
         method: 'POST',
         body: formData,
