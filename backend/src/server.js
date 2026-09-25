@@ -37,16 +37,26 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'http://localhost:5173';
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.NEXT_URL,
+  process.env.NEXT_URL_2,
+  process.env.ALLOWED_ORIGIN  
+].filter(Boolean);
 
 // --- Security & core middleware ---
 app.use(helmet());
-app.use(
-  cors({
-    origin: ALLOWED_ORIGIN,
-    methods: ['GET', 'POST'],
-  })
-);
+app.use(cors({
+  origin: function (origin, callback) {
+    // origin check (agar Postman/server-to-server call ho toh origin undefined hota hai)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Something Error 221'));
+    }
+  },
+  credentials: true
+}));
 
 // JSON body parsing for /api/analyze-meal. Multipart parsing for
 // /api/transcribe is handled separately by multer within its own route.
