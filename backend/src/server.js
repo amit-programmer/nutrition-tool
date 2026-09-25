@@ -82,7 +82,7 @@ app.use(errorHandler);
 
 const server = app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`Somi backend listening on port ${PORT} (allowed origin: ${ALLOWED_ORIGIN})`);
+  console.log(`Somi backend listening on port ${PORT} (allowed origin: ${process.env.ALLOWED_ORIGIN})`);
 });
 
 // --- Graceful Shutdown ---
